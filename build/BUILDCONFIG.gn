@@ -40,7 +40,7 @@ set_defaults("source_set") {
 
 declare_args() {
   enable_foo = false
-  custom_args = 123
+  is_debug = false
 }
 
 custom_args = []
