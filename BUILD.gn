@@ -1,0 +1,28 @@
+executable("demo"){
+    defines = ["CONFIG_VERSION=\"TEST\"", "CONFIG_BIGNUM=y"]
+    sources = [
+        "cutils.h",
+        "cutils.c",
+        "libbf.h",
+        "libbf.c",
+        "libregexp-opcode.h",
+        "libregexp.c",
+        "libregexp.h",
+        "libunicode-table.h",
+        "libunicode.h",
+        "libunicode.c",
+        "list.h",
+        "demo.c",
+        "quickjs-atom.h",
+        "quickjs-libc.c",
+        "quickjs-libc.h",
+        "quickjs-opcode.h",
+        "quickjs.c",
+        "quickjs.h"
+    ]
+
+}
+
+
+
+
