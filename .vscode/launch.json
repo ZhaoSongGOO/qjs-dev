@@ -11,6 +11,22 @@
             "program": "${workspaceFolder}/out/demo",
             "args": ["${workspaceFolder}/demo.js"],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "call_js_prop",
+            "program": "${workspaceFolder}/out/call_js_prop",
+            "args": ["${workspaceFolder}/call_js_prop.js"],
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "inject_native_object",
+            "program": "${workspaceFolder}/out/inject_native_object",
+            "args": ["${workspaceFolder}/inject_native_object.js"],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
