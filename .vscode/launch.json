@@ -27,6 +27,14 @@
             "program": "${workspaceFolder}/out/inject_native_object",
             "args": ["${workspaceFolder}/inject_native_object.js"],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "inject_native_type",
+            "program": "${workspaceFolder}/out/inject_native_type",
+            "args": ["${workspaceFolder}/inject_native_object.js"],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
