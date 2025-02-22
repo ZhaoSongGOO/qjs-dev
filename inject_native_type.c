@@ -174,8 +174,38 @@ static JSValue js_point_init(JSContext* ctx) {
     point_proto = JS_NewObject(ctx);
     JS_SetPropertyFunctionList(ctx, point_proto, js_point_proto_funcs, countof(js_point_proto_funcs));
 
+    /*
+        point class 是一个函数，名称为XPoint的函数，函数实现是native的 js_point_create
+        例如：
+        ```
+        let point_class = function XPoint(){
+            [native code]
+        }
+        ```
+    
+        js中如果一个函数是构造函数，在使用 new name()的时候, 会传入函数原型，这里设置传入的原型是 point_proto.
+
+        ```
+            let p = new point_class();
+        ```
+
+        但是因为是c++的对象，所以我们还需要在js侧暴露一个名字，以便js逻辑调用，这里设置的名字是Point
+
+        相当于下面的js代码
+        ```
+        var Point = functuion XPoint(){}
+
+        let p = new Point();
+
+        ```
+
+    */
+
     point_class = JS_NewCFunction2(ctx, js_point_create, "XPoint", 2, JS_CFUNC_constructor, 0);
     JS_SetConstructor(ctx, point_class, point_proto);
+
+    JSValue global = JS_GetGlobalObject(ctx);
+    JS_SetPropertyStr(ctx, global, "Point", point_class);
 
     JS_FreeValue(ctx, point_proto);
 
@@ -192,11 +222,7 @@ int main(int argc, char **argv)
   js_std_init_handlers(rt);
   ctx = JS_NewContext(rt);
   js_std_add_helpers(ctx, argc, argv);
-  JSValue point_class = js_point_init(ctx);
-  JSValue global = JS_GetGlobalObject(ctx);
-  JS_SetPropertyStr(ctx, global, "Point", point_class);
   eval_file(ctx, "./inject_native_type.js", 0);
-  JS_FreeValue(ctx, global);
   js_std_loop(ctx);
   js_std_free_handlers(rt);
   JS_FreeContext(ctx);
