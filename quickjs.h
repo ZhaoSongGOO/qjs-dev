@@ -418,6 +418,8 @@ typedef struct JSMemoryUsage {
 void JS_ComputeMemoryUsage(JSRuntime *rt, JSMemoryUsage *s);
 void JS_DumpMemoryUsage(FILE *fp, const JSMemoryUsage *s, JSRuntime *rt);
 
+uint32_t JS_GetRefCount(JSValueConst v); 
+
 /* atom support */
 #define JS_ATOM_NULL 0
 

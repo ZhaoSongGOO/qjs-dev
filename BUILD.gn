@@ -2,6 +2,7 @@ config("public") {
   defines = [
     "CONFIG_VERSION=\"TEST\"",
     "CONFIG_BIGNUM=y",
+    "DUMP_LEAKS"
   ]
 }
 

@@ -3,6 +3,7 @@
 #include "quickjs-libc.h"
 #include "cutils.h"
 #include "quickjs.h"
+#include <stdio.h>
 
 
 static int eval_buf(JSContext *ctx, const void *buf, int buf_len,
@@ -168,7 +169,7 @@ static const JSCFunctionListEntry js_point_proto_funcs[] = {
 };
 
 
-static JSValue js_point_init(JSContext* ctx) {
+static void js_point_init(JSContext* ctx) {
     JSValue point_proto, point_class;
 
     point_proto = JS_NewObject(ctx);
@@ -202,14 +203,37 @@ static JSValue js_point_init(JSContext* ctx) {
     */
 
     point_class = JS_NewCFunction2(ctx, js_point_create, "XPoint", 2, JS_CFUNC_constructor, 0);
+    printf("class1 : %d\n", JS_GetRefCount(point_class));
+    printf("proto1 : %d\n", JS_GetRefCount(point_proto));
     JS_SetConstructor(ctx, point_class, point_proto);
-
+    printf("class2 : %d\n", JS_GetRefCount(point_class));
+    printf("proto2 : %d\n", JS_GetRefCount(point_proto));
     JSValue global = JS_GetGlobalObject(ctx);
     JS_SetPropertyStr(ctx, global, "Point", point_class);
-
+    printf("class3 : %d\n", JS_GetRefCount(point_class));
+    printf("proto3 : %d\n", JS_GetRefCount(point_proto));
     JS_FreeValue(ctx, point_proto);
+    /*
+        这里不可以 free point_class: 否则会报错，如下。看报错原因是因为尝试对一个引用计数小于等于0的对象进行gc，即重复释放。
+        ```
+            Assertion failed: (p->ref_count > 0), function gc_decref_child, file quickjs.c, line 5751.
+            [1]    35174 abort      ./out/inject_native_type
+        ```
+        1. 首先我增加了一个函数 JS_GetRefCount 用来打印对象的引用计数，在没有 free point_class 的时候，其引用计数为 2。看起来在正常的情况下，qjs vm 内部需要对这个对象 free 两次。
+        2. 继续增加日志，发现在 JS_SetConstructor(ctx, point_class, point_proto); 后 class 和 proto 引用计数都增加了 1. 看起来这两个互相引用。
+        3. 在 JS_SetPropertyStr 执行后，我预期是看到引用计数为 3， 但是事实上还是 2. 也就是说在 JS_SetPropertyStr 中挂载在 globalobj 上的对象是通过指针挂载的，而不是对象引用。所以我们不能 free。
+        4. 
 
-    return point_class;
+        ```
+            global ---> class ---> proto
+                         ^          |
+                         | _ _ _ _  |
+        ```
+    */
+    // JS_FreeValue(ctx, point_class);
+    JS_FreeValue(ctx, global);
+
+    printf("class : %d\n", JS_GetRefCount(point_class));
 }
 
 
@@ -222,6 +246,7 @@ int main(int argc, char **argv)
   js_std_init_handlers(rt);
   ctx = JS_NewContext(rt);
   js_std_add_helpers(ctx, argc, argv);
+  js_point_init(ctx);
   eval_file(ctx, "./inject_native_type.js", 0);
   js_std_loop(ctx);
   js_std_free_handlers(rt);

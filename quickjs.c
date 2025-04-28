@@ -1938,6 +1938,14 @@ void JS_SetRuntimeInfo(JSRuntime *rt, const char *s)
         rt->rt_info = s;
 }
 
+uint32_t JS_GetRefCount(JSValueConst v) {
+    if (!JS_VALUE_HAS_REF_COUNT(v)) {
+        return 0; 
+    }
+    JSRefCountHeader *p = JS_VALUE_GET_PTR(v);
+    return p->ref_count;
+}
+
 void JS_FreeRuntime(JSRuntime *rt)
 {
     struct list_head *el, *el1;
@@ -5741,8 +5749,15 @@ static void gc_decref_child(JSRuntime *rt, JSGCObjectHeader *p)
         JS_DumpGCObject(rt, p);
     }
     assert(p->ref_count > 0);
+    // printf(
+    //     "[GC] Decref: ptr=%p, ref_count=%d (caller: %p)\n",
+    //     p,
+    //     p->ref_count,
+    //     __builtin_return_address(0)  // 获取调用者地址（GCC/clang 可用）
+    // );
     p->ref_count--;
     if (p->ref_count == 0 && p->mark == 1) {
+        // printf("[GC] Freeing object: ptr=%p\n", p);
         list_del(&p->link);
         list_add_tail(&p->link, &rt->tmp_obj_list);
     }
