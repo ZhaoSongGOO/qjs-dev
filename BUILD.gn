@@ -1,100 +1,49 @@
-executable("demo"){
-    defines = ["CONFIG_VERSION=\"TEST\"", "CONFIG_BIGNUM=y"]
-    sources = [
-        "cutils.h",
-        "cutils.c",
-        "libbf.h",
-        "libbf.c",
-        "libregexp-opcode.h",
-        "libregexp.c",
-        "libregexp.h",
-        "libunicode-table.h",
-        "libunicode.h",
-        "libunicode.c",
-        "list.h",
-        "demo.c",
-        "quickjs-atom.h",
-        "quickjs-libc.c",
-        "quickjs-libc.h",
-        "quickjs-opcode.h",
-        "quickjs.c",
-        "quickjs.h"
-    ]
-
+config("public") {
+  defines = [
+    "CONFIG_VERSION=\"TEST\"",
+    "CONFIG_BIGNUM=y",
+  ]
 }
 
-executable("call_js_prop"){
-    defines = ["CONFIG_VERSION=\"TEST\"", "CONFIG_BIGNUM=y"]
-    sources = [
-        "cutils.h",
-        "cutils.c",
-        "libbf.h",
-        "libbf.c",
-        "libregexp-opcode.h",
-        "libregexp.c",
-        "libregexp.h",
-        "libunicode-table.h",
-        "libunicode.h",
-        "libunicode.c",
-        "list.h",
-        "call_js_prop.c",
-        "quickjs-atom.h",
-        "quickjs-libc.c",
-        "quickjs-libc.h",
-        "quickjs-opcode.h",
-        "quickjs.c",
-        "quickjs.h"
-    ]
+shared_library("qjs") {
+  configs += [ ":public" ]
+  sources = [
+    "cutils.c",
+    "cutils.h",
+    "libbf.c",
+    "libbf.h",
+    "libregexp-opcode.h",
+    "libregexp.c",
+    "libregexp.h",
+    "libunicode-table.h",
+    "libunicode.c",
+    "libunicode.h",
+    "list.h",
+    "quickjs-atom.h",
+    "quickjs-libc.c",
+    "quickjs-libc.h",
+    "quickjs-opcode.h",
+    "quickjs.c",
+    "quickjs.h",
+  ]
 }
 
-executable("inject_native_object"){
-    defines = ["CONFIG_VERSION=\"TEST\"", "CONFIG_BIGNUM=y"]
-    sources = [
-        "cutils.h",
-        "cutils.c",
-        "libbf.h",
-        "libbf.c",
-        "libregexp-opcode.h",
-        "libregexp.c",
-        "libregexp.h",
-        "libunicode-table.h",
-        "libunicode.h",
-        "libunicode.c",
-        "list.h",
-        "inject_native_object.c",
-        "quickjs-atom.h",
-        "quickjs-libc.c",
-        "quickjs-libc.h",
-        "quickjs-opcode.h",
-        "quickjs.c",
-        "quickjs.h"
-    ]
+executable("demo") {
+  sources = [ "demo.c" ]
+  deps = [ ":qjs" ]
 }
 
-executable("inject_native_type"){
-    defines = ["CONFIG_VERSION=\"TEST\"", "CONFIG_BIGNUM=y",]
-    sources = [
-        "cutils.h",
-        "cutils.c",
-        "libbf.h",
-        "libbf.c",
-        "libregexp-opcode.h",
-        "libregexp.c",
-        "libregexp.h",
-        "libunicode-table.h",
-        "libunicode.h",
-        "libunicode.c",
-        "list.h",
-        "inject_native_type.c",
-        "quickjs-atom.h",
-        "quickjs-libc.c",
-        "quickjs-libc.h",
-        "quickjs-opcode.h",
-        "quickjs.c",
-        "quickjs.h"
-    ]
+executable("call_js_prop") {
+  sources = [ "call_js_prop.c" ]
+  deps = [ ":qjs" ]
 }
 
+executable("inject_native_object") {
+  sources = [ "inject_native_object.c" ]
+  deps = [ ":qjs" ]
+}
 
-
-
+executable("inject_native_type") {
+  sources = [ "inject_native_type.c" ]
+  deps = [ ":qjs" ]
+}
