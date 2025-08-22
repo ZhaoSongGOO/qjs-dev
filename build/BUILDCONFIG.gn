@@ -41,6 +41,7 @@ set_defaults("source_set") {
 declare_args() {
   enable_foo = false
   is_debug = false
+  build_example = false
 }
 
 custom_args = []

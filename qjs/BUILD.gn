@@ -1,0 +1,31 @@
+config("public") {
+  defines = [
+    "CONFIG_VERSION=\"TEST\"",
+    "CONFIG_BIGNUM=y",
+    "DUMP_LEAKS"
+  ]
+  include_dirs = ["."]
+}
+
+source_set("qjs") {
+  all_dependent_configs = [":public"] 
+  sources = [
+    "cutils.c",
+    "cutils.h",
+    "libbf.c",
+    "libbf.h",
+    "libregexp-opcode.h",
+    "libregexp.c",
+    "libregexp.h",
+    "libunicode-table.h",
+    "libunicode.c",
+    "libunicode.h",
+    "list.h",
+    "quickjs-atom.h",
+    "quickjs-libc.c",
+    "quickjs-libc.h",
+    "quickjs-opcode.h",
+    "quickjs.c",
+    "quickjs.h",
+  ]
+}

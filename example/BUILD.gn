@@ -1,0 +1,28 @@
+executable("demo") {
+  sources = [ "demo.c" ]
+  public_deps = [ "//qjs:qjs" ]
+}
+
+executable("call_js_prop") {
+  sources = [ "call_js_prop.c" ]
+  public_deps = [ "//qjs:qjs" ]
+}
+
+executable("inject_native_object") {
+  sources = [ "inject_native_object.c" ]
+  public_deps = [ "//qjs:qjs" ]
+}
+
+executable("inject_native_type") {
+  sources = [ "inject_native_type.c" ]
+  public_deps = [ "//qjs:qjs" ]
+}
+
+group("example"){
+  deps = [
+    ":demo",
+    ":call_js_prop",
+    ":inject_native_object",
+    ":inject_native_type"
+  ]
+}
