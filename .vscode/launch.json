@@ -35,6 +35,14 @@
             "program": "${workspaceFolder}/out/inject_native_type",
             "args": ["${workspaceFolder}/inject_native_object.js"],
             "cwd": "${workspaceFolder}"
+        },
+        {
+            "type": "lldb",
+            "request": "launch",
+            "name": "quickjs_app",
+            "program": "${workspaceFolder}/out/quickjs_app",
+            "args": [],
+            "cwd": "${workspaceFolder}"
         }
     ]
 }
