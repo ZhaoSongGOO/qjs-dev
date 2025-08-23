@@ -18,11 +18,11 @@ executable("inject_native_type") {
   public_deps = [ "//qjs:qjs" ]
 }
 
-group("example"){
+group("example") {
   deps = [
-    ":demo",
     ":call_js_prop",
+    ":demo",
     ":inject_native_object",
-    ":inject_native_type"
+    ":inject_native_type",
   ]
 }

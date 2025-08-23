@@ -1,11 +1,11 @@
-executable("quickjs_app"){
-  sources = ["quickjs_app.cc","jsi.h"]
-  deps = [ "//qjs:qjs" ]
+executable("app") {
+  sources = [ "main.cc" ]
+  deps = [ "//jsi:jsi" ]
 }
 
-group("default"){
-  deps = [":quickjs_app"]
-  if(build_example){
-    deps += ["//example:example"]
+group("default") {
+  deps = [ ":app" ]
+  if (build_example) {
+    deps += [ "//example:example" ]
   }
 }
