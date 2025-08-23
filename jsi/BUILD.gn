@@ -1,12 +1,7 @@
-config("jsi_public") {
-  include_dirs = [ "." ]
-}
-
 source_set("jsi") {
   sources = [
     "jsi.cc",
     "jsi.h",
   ]
-  all_dependent_configs = [ ":jsi_public" ]
   deps = [ "../qjs:qjs" ]
 }

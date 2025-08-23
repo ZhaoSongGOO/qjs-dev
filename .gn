@@ -1,2 +1,2 @@
-# The location of the build configuration file.
+# Copyright by zhaosonggo Authors. All rights reserved.
 buildconfig = "//build/BUILDCONFIG.gn"

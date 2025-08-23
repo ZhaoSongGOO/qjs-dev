@@ -4,7 +4,6 @@ config("public") {
     "CONFIG_BIGNUM=y",
     "DUMP_LEAKS"
   ]
-  include_dirs = ["."]
 }
 
 source_set("qjs") {

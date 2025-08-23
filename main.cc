@@ -1,4 +1,6 @@
 #include "jsi.h"
+#include <iostream>
+#include "quickjs-libc.h"
 
 class MyJNIObject : public JSIObject {
  public:
