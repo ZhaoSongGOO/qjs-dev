@@ -2,7 +2,7 @@ deps = {
         "tools":{
             "type":"git",
             "repo":"https://github.com/ZhaoSongGOO/tools.git",
-            "commit":"8e66dc338245124137a10f7f6181486ba43873a4",
+            "commit":"b1b1620cced1bdca90345ecf78c0766c09756156",
             "ignore":True
         },
     "build":{
